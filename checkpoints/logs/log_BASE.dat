@@ -1,0 +1,3 @@
+[1-50] | Discriminator loss:2.636066 | Fake loss:-0.749068 | Real loss:0.651490 | GP loss:2.207217 | Classifier loss:0.526428 | Generator loss:32.867195 | GAN loss:-0.554834 | Classifier loss:4.915616 | reconstruction loss:28.506413
+[1-100] | Discriminator loss:0.127743 | Fake loss:-0.884897 | Real loss:-0.049565 | GP loss:0.536307 | Classifier loss:0.525898 | Generator loss:23.690344 | GAN loss:-1.323323 | Classifier loss:5.643279 | reconstruction loss:19.370388
+[1-150] | Discriminator loss:-8.148043 | Fake loss:-5.500217 | Real loss:-3.772620 | GP loss:0.672100 | Classifier loss:0.452696 | Generator loss:29.785395 | GAN loss:6.372098 | Classifier loss:4.888900 | reconstruction loss:18.524397

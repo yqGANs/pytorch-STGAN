@@ -1,0 +1,68 @@
+MODEL_NAME: 'STGAN'                   # model name
+SEED: 3302                            # random seed
+GPU: [0]                              # list of gpu ids
+
+INPUT_SIZE: [128, 128]                # input image size for training
+INIT_EPOCH: 100                       # number of epochs with init lr
+EPOCH: 200                            # maximum number of epochs to train the model
+MAX_ITERS: 99999999                   # maximum number of iterations to train the model
+LR: 0.0002                            # learning rate
+BETA1: 0.5
+BETA2: 0.999
+N_D: 5                                # number of d updates per g update
+BATCH_SIZE: 32
+
+ENC_DIM: 64
+DEC_DIM: 64
+DIS_DIM: 64
+DIS_FC_DIM: 1024
+ATT_DIM: 40                           # number of attributes
+
+SKIP_LAYERS: 4
+INJECT_LAYERS: 4
+ENC_LAYERS: 5
+DEC_LAYERS: 5
+DIS_LAYERS: 5
+
+MULTI_INPUTS: 1                       # number of hierachical inputs (in the first several encoder layers)
+
+USE_STU: True
+STU_DIM: 64
+STU_LAYERS: 4
+STU_INJECT_LAYERS: 4
+STU_KERNEL_SIZE: 3
+STU_NORM: 'none'                      # none | bn | in
+STU_STATE: 'stu'                      # stu | gru | direct
+
+THRES_INT: 0.5
+
+LABEL_MODE: 'diff'                    # diff | target
+GAN_MODE: 'w'                         # ls | original | w | hinge
+UP_MODE: 1                            # 0: Deconv | 1: Upsample | 2: Upsamplebilinear | 3: Subpixel
+
+REC_LOSS_WEIGHT: 100
+ATT_LOSS_WEIGHT: 10
+DIS_GP_LOSS_WEIGHT: 10
+
+WEIGHT_INIT: 'xavier'             # normal | xavier | kaiming | orthogonal
+INIT_VARIANCE: 0.02
+
+SAVE_INTERVAL: 40000                  # how many iterations to wait before saving model (0: never)
+SAMPLE_INTERVAL: 4000                 # how many iterations to wait before sampling (0: never)
+SAMPLE_SIZE: 8                       # number of images to sample
+EVAL_INTERVAL: 1000                   # how many iterations to wait before model evaluation (0: never)
+EVAL_SIZE: 10                         # number of samples to eval
+LOG_INTERVAL: 50                      # how many iterations to wait before logging training status (0: never)
+
+DATA_PATH: '../img_align_celeba/'
+LABEL_PATH: '../list_attr_celeba.txt'
+
+LOG_PATH: 'checkpoints/logs/log_BASE.dat'
+SAMPLE_PATH: 'checkpoints/samples/'
+
+GEN_SAVE_PATH: 'checkpoints/weights/generator.pth'
+DIS_SAVE_PATH: 'checkpoints/weights/discriminator.pth'
+
+PRETRAINED: False                     # use pretrained model or not
+GEN_LOAD_PATH: 'checkpoints/weights/generator.pth'
+DIS_LOAD_PATH: 'checkpoints/weights/discriminator.pth'
