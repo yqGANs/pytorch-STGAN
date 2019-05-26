@@ -5,7 +5,6 @@ import scipy
 import random
 import numpy as np
 import torch
-import matplotlib.pyplot as plt
 from PIL import Image
 
 
@@ -27,84 +26,6 @@ def stitch_images(inputs, *outputs, img_per_row=2):
             img.paste(im, (xoffset + cat * width, yoffset))
 
     return img
-
-
-def visualize_tensor(tensor, imtype=np.uint8, denormtype=0, num_channel=(0, 1), path='checkpoints/visuals/', abort=True):
-    """Visualize a tensor.
-        Arguments:
-            tensor: Input tensor
-            imtype: Digit type, np.uint8, np.float64
-            denormtype: Denormalization type, 0 (no denormlization, heatmap), 1 ([-1,1] to [0,255]), 2 ([0,1] to [0,255])
-            num_output: if visualize heatmap choose which channels to operate,
-                        if visualize image choose which samples in batch to operate,
-                        default: (0,1), E.g.(5,35) is desirable if number >= 35
-        """
-    print("Tensor to be visualized...Shape:", tensor.shape)
-    tensor = tensor.detach().cpu().float()
-    if tensor.dim() == 4 and (tensor.shape[1] == 3 or (tensor.shape[1] == 1 and denormtype != 0)):
-        # shape as [b, 3, h, w] or [b, 1, h, w]
-        tensor = tensor.permute(0, 2, 3, 1)
-        if denormtype == 2:
-            tensor = tensor * 255.0
-        elif denormtype == 1:
-            tensor = (tensor + 1.) / 2.0 * 255.0
-        else:
-            assert False, "Visualize Error: Visualize image tensor with wrong de-normalization type!"
-        for i in range(num_channel[0], num_channel[1]):
-            image_numpy = tensor[i,:,:,:].numpy()
-            image_numpy = np.clip(image_numpy, 0, 255)
-            if image_numpy.shape[2] == 1:
-                image_numpy = image_numpy[:, :, 0]
-            image_numpy = image_numpy.astype(imtype)
-            image = Image.fromarray(image_numpy)
-            name = os.path.join(path, 'sample_'+ str(i) + '_' + str(int(time.time() * 100)) + '.png')
-            print('\nsaving ' + name)
-            image.save(name)
-    elif tensor.dim() == 4:
-        # shape as [b, c, h, w]
-        tensor = tensor[0]
-        assert denormtype != 1 and denormtype != 2, "Visualize Error: Visualize heatmap tensor with wrong de-normalization type!"
-
-        for i in range(num_channel[0], num_channel[1]):
-            image_numpy = tensor[i,:,:].numpy()
-            if denormtype == 2:
-                image_numpy = image_numpy * 255.0
-                image_numpy = np.clip(image_numpy, 0, 255)
-                image_numpy = image_numpy.astype(np.uint8)
-                image = Image.fromarray(image_numpy)
-                name = os.path.join(path, 'channel_'+ str(i) + '_' + str(int(time.time() * 100)) + '.png')
-                print('\nsaving ' + name)
-                image.save(name)
-            else:
-                plt.matshow(image_numpy, cmap='hot')
-                plt.colorbar()
-                plt.savefig(os.path.join(path, 'channel_'+ str(i) + '_' + str(int(time.time() * 100)) + '.png'))
-
-    elif tensor.dim() == 2:
-        image_numpy = tensor.numpy()
-        if denormtype == 2 or denormtype == 1:
-            if denormtype == 2:
-                image_numpy = image_numpy * 255.0
-            else:
-                image_numpy = (image_numpy + 1.) / 2.0 * 255.0
-            image_numpy = np.clip(image_numpy, 0, 255)
-            image_numpy = image_numpy.astype(np.uint8)
-            image = Image.fromarray(image_numpy)
-            name = os.path.join(path, 'tensor_' + str(int(time.time() * 100)) + '.png')
-            print('\nsaving ' + name)
-            image.save(name)
-        else:
-            plt.matshow(image_numpy, cmap='hot')
-            plt.colorbar()
-            name = os.path.join(path, 'tensor_' + str(int(time.time() * 100)) + '.png')
-            print('\nsaving ' + name)
-            plt.savefig(name)
-
-    else:
-        assert False, "Visualize Error: tensor is not with valid shape!"
-    if abort:
-        print("Abort!")
-        sys.exit(0)
 
 
 class Progbar(object):
