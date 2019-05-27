@@ -96,7 +96,7 @@ class STGAN(nn.Module):
 
     def process_discriminator_one_step(self, img, label):
         self.optimizer_D.zero_grad()
-        gen_label = label
+        gen_label = label.clone()
         for i in range(gen_label.shape[0]):
             gen_label[i, :] = label[i, torch.randperm(label.shape[1])]
 
@@ -110,7 +110,7 @@ class STGAN(nn.Module):
 
     def process_generator_one_step(self, img, label):
         self.optimizer_G.zero_grad()
-        gen_label = label
+        gen_label = label.clone()
         for i in range(gen_label.shape[0]):
             gen_label[i, :] = label[i, torch.randperm(label.shape[1])]
 
@@ -213,6 +213,10 @@ class STGAN(nn.Module):
     def sample(self, img, label, iteration, att_names, att_dicts):
         with torch.no_grad():
             gen_label = Align_Celeba.generate_test_label(label, att_names, att_dicts)
+            
+            label = label.type(self.FloatTensor)
+            gen_label = gen_label.type(self.FloatTensor)
+            
             _gen_label = (gen_label * 2.0 - 1.0) * self.thres_int
             _label = (label * 2.0 - 1.0) * self.thres_int
             fake_image = self.generate_fake(img, _label, _gen_label)

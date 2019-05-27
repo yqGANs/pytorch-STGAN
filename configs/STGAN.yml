@@ -48,8 +48,8 @@ WEIGHT_INIT: 'xavier'             # normal | xavier | kaiming | orthogonal
 INIT_VARIANCE: 0.02
 
 SAVE_INTERVAL: 40000                  # how many iterations to wait before saving model (0: never)
-SAMPLE_INTERVAL: 4000                 # how many iterations to wait before sampling (0: never)
-SAMPLE_SIZE: 8                       # number of images to sample
+SAMPLE_INTERVAL: 500                  # how many iterations to wait before sampling (0: never)
+SAMPLE_SIZE: 8                        # number of images to sample
 EVAL_INTERVAL: 1000                   # how many iterations to wait before model evaluation (0: never)
 EVAL_SIZE: 10                         # number of samples to eval
 LOG_INTERVAL: 50                      # how many iterations to wait before logging training status (0: never)

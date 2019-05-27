@@ -90,9 +90,8 @@ class Align_Celeba(data.Dataset):
     def generate_test_label(label, att_names, att_dicts):
         gen_label = label
         for i in range(gen_label.size(0)):
-            invalid = True
-            while(invalid):
-                tmp_label = gen_label[i, :]
+            while(True):
+                tmp_label = gen_label[i, :].clone()
                 idx = torch.randint(gen_label.size(1), (1,))
                 tmp_label[idx] = 1 - tmp_label[idx]
                 att_name = att_names[idx]
@@ -115,8 +114,8 @@ class Align_Celeba(data.Dataset):
                         if n != att_name:
                             tmp_label[att_dicts[n]] = 0
                 if not torch.equal(gen_label[i, :], tmp_label):
-                    invalid = False
                     gen_label[i, :] = tmp_label
+                    break
         return gen_label
 
 
