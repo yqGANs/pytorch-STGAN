@@ -1,6 +1,6 @@
 .idea/
 __pycache__
 checkpoints/weights/discriminator.pth
-results/weights/generator.pth
-results/samples/*.png
+checkpoints/weights/generator.pth
+checkpoints/samples/*.png
 nohup.out
